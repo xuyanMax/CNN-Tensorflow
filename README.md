@@ -2,11 +2,11 @@
 
 
 
-## WEEK-1 
+## WEEK-1 CNN
 
 Look at a famous Kaggle Dogs vs Cats dataset: https://www.kaggle.com/c/dogs-vs-cats
 
-### Some important skills learnt from it
+### WEEK-1 Quiz
 
 `flow_from_directory` on the ImageGenerator automatically labels images based on their directory name.
 
@@ -52,12 +52,18 @@ Train the model with `binary_crossentropy` loss, use `RMSprop` optimizer with a 
 from tensorflow.keras.optimizers import RMSprop
 model.compile(optimizer=RMSprop(lr=0.001), loss='binary_crossentropy', metrics=['acc'] )
 ``` 
+
+#### RMSprop
+#### SGD
+stochastic gradient descent
+#### ADAM
+
  
 ### Data Preprocessing
 Create two data generators for both training and testing images. Normalize the image values to be in the [0, 1] range.
 
 ```python
-from tensorflow.keras.preprocessing.image impor ImageDataGenerator
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 train_datagen = ImageDataGenerator(rescale=1.0/255)
 validation_datagen = ImageDataGenerator(rescale=1.0/255)
@@ -84,12 +90,10 @@ history = model.fit_generator(train_generator,
                                 verbose=2)
 ```
 
- 
-
 ### Visualizing Intermediate Representations
 
 Because these representations carry increasingly less information about the original pixels of the image, 
-but increasingly refined information about the class of the image. In a word, Convnet can be seen as a distillation process.
+but increasingly refined information about the class of the image. In a word, Convnet can be seen as a `DISTILLATION` process.
  
 ### Evaluating Accuracy and Loss from model history
 ```python
@@ -119,3 +123,60 @@ plt.figure()
 ```
 Overfitting occurs as training accuracy gets close to 100% while testing accuracy stalls as 70%. The testing loss reaches the minimum after 5 epochs. 
 
+## WEEK-2 Image Augmentation 
+
+### WEEK-2 Quiz
+
+Using IA effectively stimulates having a larger dataset for training.
+
+Using IA makes your training gets slower, because the augmented data is bigger.
+
+IA helps solve overfitting by manipulating the training dataset by generating more scenarios for features in the images.
+
+IA does the image modification in memory and does no harm to your raw data on the disk. 
+
+To use IA in Tensorflow, you simply add a few parameters to `ImageDataGenerator`.
+
+`fill_mode` parameter makes use of attempts to recreate `lost information` after a transformation like a shear  
+
+
+
+### What makes an Overfitting
+
+For example, if the training accuracy gets close to 100% while validation accuracy is around 70% - 80%, then it is a typical overfitting problem. 
+
+ 
+### Image Augmentation
+
+It is a cheap way of `EXTENDING` your datasets by shifting, rotating, flipping, squash and zoom in/out. The line of reasoning is that you can mimic a lying cat by rotating 90 degrees of a standing cat in case 
+your training dataset does not have a lying cat causing your model having difficulty identifying a lying one in validation process.
+
+
+To add image augmentation, you simply add few lines of codes to `ImageDataGenerator`
+```python
+train_datagen = ImageDataGenerator(
+                rotation_range=40, # values in degrees(0-180)
+                width_shift_range=0.2, #fraction of total width or height within which to randomly shift
+                height_shift_range=0.2,
+                shear_rang=0.2,
+                zoom_range=0.2,
+                horizontao_flip=True,# flipping half of the images horizontally
+                fill_mode='nearest' # strategy for filling in newly generated pixels most likely after rotation or shifting
+                ) 
+```
+
+### Impact of Image Augmentation on Dogs vs. Cats CNN
+
+With a simple code change, it turns out to have a better validation accuracy, improving overfitting issue in this case. 
+
+### Impact of Image Augmentation on Horses vs Human CNN
+
+Under such circumstance, IA does not work well in that training accuracy is getting close to 100% while validation accuracy are fluctuating crazy in thee 60 to 70.
+
+There are a couple reasons behind such a scenario:
+1. The training dataset is still too sparse 
+2. The validation dataset is poorly designed in that it is very much similar to training set. Consider those two dataset is of high similarity, with IA, it extends the training dataset but those 
+extended images are not included in validation set, making IA of less value. To summarize, IA introduces randomness to training set but cannot do the same to validation set. 
+If the validation set lacks randomness, then it shows fluctuation. So it is important to make sure that both your training and validation sets contain a variety of random images, or IA may not be of much help.   
+
+  

@@ -31,11 +31,11 @@ import tensorflow as tf
 # end our network with a sigmoid activation
 
 model = tf.keras.models.Sequential([
-    tf.keras.layers.Conv2d(16, (3,3), activation='relu', input_shape=(150,150,3)), 
+    tf.keras.layers.Conv2D(16, (3,3), activation='relu', input_shape=(150,150,3)), 
     tf.keras.layers.MaxPooling2D(2,2),
-    tf.keras.layers.Conv2d(32, (3,3), activation='relu'),
-    tf.keras.layers.MaxPooling(2,2),
-    tf.keras.layers.Conv2d(64, (3,3), activation='relu'),
+    tf.keras.layers.Conv2D(32, (3,3), activation='relu'),
+    tf.keras.layers.MaxPooling2D(2,2),
+    tf.keras.layers.Conv2D(64, (3,3), activation='relu'),
     #Flatten the results to feed into DNN
     tf.keras.layers.Flatten(),
     #512 neurons in hidden layer
@@ -154,7 +154,11 @@ your training dataset does not have a lying cat causing your model having diffic
 
 To add image augmentation, you simply add few lines of codes to `ImageDataGenerator`
 ```python
+TRAINING_DIR='/tmp/cats-v-dogs/training/'
+
+# this ImageDataGenerator allows you to instantiate generators of augmented image batches via .flow_from_directory
 train_datagen = ImageDataGenerator(
+                rescale=1.0/255,
                 rotation_range=40, # values in degrees(0-180)
                 width_shift_range=0.2, #fraction of total width or height within which to randomly shift
                 height_shift_range=0.2,
@@ -162,14 +166,33 @@ train_datagen = ImageDataGenerator(
                 zoom_range=0.2,
                 horizontao_flip=True,# flipping half of the images horizontally
                 fill_mode='nearest' # strategy for filling in newly generated pixels most likely after rotation or shifting
-                ) 
+                )
+
+train_generator = train_datagen.flow_from_directory(
+    TRAINING_DIR,
+    batch_size=20,
+    class_mode='binary',
+    target_size=(150,150)
+) 
 ```
+
+#### use of batch_size
+
+The `batch_size` is the amount of samples you feed into your network once. Say you have 1050 training samples and `batch_size=100`. It will take 
+100 samples each time and train the network. Finally the last set of 50 samples will be a problem and a solution is to take out the last 50 and train it.
+
+>Advantages of using a batch size < number of all samples 
+>> 1. It requires less memory 
+>> 1. Typically networks train faster with mini-batch
+
+>Disadvantages of using a batch size < number of all samples
+>> The less the batch the less the accurate estimate of the gradient will be
 
 ### Impact of Image Augmentation on Dogs vs. Cats CNN
 
 With a simple code change, it turns out to have a better validation accuracy, improving overfitting issue in this case. 
 
-### Impact of Image Augmentation on Horses vs Human CNN
+### Impact of Image Augmentation on Horses vs. Human CNN
 
 Under such circumstance, IA does not work well in that training accuracy is getting close to 100% while validation accuracy are fluctuating crazy in thee 60 to 70.
 

@@ -31,3 +31,93 @@ The parameter is between `0 and 1` and it's the fraction of units to drop. Say d
 
 The idea behind Drop Out is that even with Transfer Learning, we can still end up with `overfitting`. Because layers in network can some times have similar weight and possibly impact each other, which leads to overfitting, being a risk of a big complex model. 
 
+## Implementation
+
+### imports
+
+```python
+imports os
+imports tensorflow.keras from layers
+from tensorflow.keras import Model
+
+# Download a copy of the pretrained weights for inception neural network 
+!wget --no-check-certificate \
+    https://storage.googleapis.com/mledu-datasets/inception_v3_weights_tf_dim_ordering_tf_kernels_notop.h5 \
+    -O /tmp/inception_v3_weights_tf_dim_ordering_tf_kernels_notop.h5
+from tensorflow.keras.applications.inception_v3 import inceptionV3
+
+local_weights_file = '/tmp/inception_v3_weights_tf_dim_ordering_tf_kernels_notop.h5'
+
+pre_trained_model = InceptionV3(input_shape=(150,150,3),
+    include_top=False,
+    weights=None)
+pre_trained_model.load_weights(local_weights_file)
+
+# Lock up layers
+for layer in pre_trained_model.layers:
+    layer.trainbale = False
+# Show model layers & get the last layer
+pre_trained_model.summary()
+last_layer = pre_trained_model.get_layer('mixed7')
+last_output = last_layer.output
+```
+### Build  & Compile Model Based on Pretrained Model
+
+```python
+from tensorflow.keras.optimizers import RMSprop
+
+# Flatten the output to 1 dimension
+x = layers.Flatten()(last_output)
+# add layers
+x = layers.Dense(1024, activation='relu')
+x = layers.Dropout(0,2)(x)
+x = layers.Dense(1, activation='sigmoid')
+# Build new model
+model = Model(pre_trained_model, x)
+
+model.compile(optimizer = 'RMSprop',
+    loss='binary_crossentropy',
+    metrics=['acc'])    
+}
+```
+
+### Create ImageDataGenerators for training and validation 
+
+### Create callbacks to stop training once accuracy reaches 99.9%
+```python
+class myCallback(tf.keras.callbacks.Callback):
+    def on_epoch_end(self, epoch, logs={}):
+        if(log.get('acc') > 0.99):
+            print("\nReached 99.9% accuracy to cancelling training.")
+            self.model.stop_training=True
+```
+### Configure the Model
+
+```python
+history = model.fit_generator(train_generator, 
+    validation_data = validation_generator,
+    epochs = 100, 
+    steps_per_epoch = 50,
+    validation_steps = 50,
+    verbose = 2,
+    callbacks=[callbacks])
+```
+
+### Plot the Accuracy 
+
+```python
+import matplotlib.pyplot as Plot
+acc = history.history['acc']
+val_acc = history.history['val_acc']
+loss = history.history['loss']
+val_loss = history.history['val_loss']
+epochs = len(acc)
+
+plt.plot(epochs, acc, 'r', label="training acc")
+plt.plot(epochs, val_acc, 'r', label="validation acc")
+plt.title("Training and validation accuracy")
+plt.legend(loc=0)
+plt.figure()
+plt.show()
+```
+

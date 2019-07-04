@@ -82,6 +82,26 @@ model.compile(optimizer = 'RMSprop',
 ```
 
 ### Create ImageDataGenerators for training and validation 
+```python
+
+train_dir = '/tmp/cats_and_dogs_filtered/training'
+train_cats_dir = '/tmp/cats_and_dogs_filtered/training/cats'
+train_cats_dir = '/tmp/cats_and_dogs_filtered/training/dogs'
+
+validation_dir = '/tmp/cats_and_dogs_filtered/validation'ython
+validation_cats_dir = '/tmp/cats_and_dogs_filtered/validation/cats'
+validation_dogs_dir = '/tmp/cats_and_dogs_filtered/validation/dogs'
+
+# Add our data-augmentation parameters to ImageDataGenerator
+train_datagen = ImageDataGenerator(rescale=1./255.0, ...)
+# Note that the validation data should not be augmented!
+validation_datagen = ImageDataGenerator(rescale=1./255.0)
+# Flow training images in batches of 20 using train_datagen generator
+train_generator = train_datagen.flow_from_directory(train_dir, 
+    batch_size=20,
+    class_mode='binary',
+    target_size=(150, 150))
+```
 
 ### Create callbacks to stop training once accuracy reaches 99.9%
 ```python

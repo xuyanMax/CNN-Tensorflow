@@ -49,8 +49,8 @@ from tensorflow.keras.applications.inception_v3 import inceptionV3
 local_weights_file = '/tmp/inception_v3_weights_tf_dim_ordering_tf_kernels_notop.h5'
 
 pre_trained_model = InceptionV3(input_shape=(150,150,3),
-    include_top=False,
-    weights=None)
+                                include_top=False,
+                                weights=None)
 pre_trained_model.load_weights(local_weights_file)
 
 # Lock up layers
@@ -98,9 +98,9 @@ train_datagen = ImageDataGenerator(rescale=1./255.0, ...)
 validation_datagen = ImageDataGenerator(rescale=1./255.0)
 # Flow training images in batches of 20 using train_datagen generator
 train_generator = train_datagen.flow_from_directory(train_dir, 
-    batch_size=20,
-    class_mode='binary',
-    target_size=(150, 150))
+                                                    batch_size=20,
+                                                    class_mode='binary',
+                                                    target_size=(150, 150))
 ```
 
 ### Create callbacks to stop training once accuracy reaches 99.9%
@@ -115,12 +115,12 @@ class myCallback(tf.keras.callbacks.Callback):
 
 ```python
 history = model.fit_generator(train_generator, 
-    validation_data = validation_generator,
-    epochs = 100, 
-    steps_per_epoch = 50,
-    validation_steps = 50,
-    verbose = 2,
-    callbacks=[callbacks])
+                            validation_data = validation_generator,
+                            epochs = 100, 
+                            steps_per_epoch = 50,
+                            validation_steps = 50,
+                            verbose = 2,
+                            callbacks=[callbacks])
 ```
 
 ### Plot the Accuracy 

@@ -33,7 +33,7 @@ The idea behind Drop Out is that even with Transfer Learning, we can still end u
 
 ## Implementation
 
-### imports
+### imports & Download Data
 
 ```python
 imports os
@@ -88,7 +88,7 @@ train_dir = '/tmp/cats_and_dogs_filtered/training'
 train_cats_dir = '/tmp/cats_and_dogs_filtered/training/cats'
 train_cats_dir = '/tmp/cats_and_dogs_filtered/training/dogs'
 
-validation_dir = '/tmp/cats_and_dogs_filtered/validation'ython
+validation_dir = '/tmp/cats_and_dogs_filtered/validation'
 validation_cats_dir = '/tmp/cats_and_dogs_filtered/validation/cats'
 validation_dogs_dir = '/tmp/cats_and_dogs_filtered/validation/dogs'
 
@@ -123,7 +123,7 @@ history = model.fit_generator(train_generator,
                             callbacks=[callbacks])
 ```
 
-### Plot the Accuracy 
+### Plot the Accuracy & Loss
 
 ```python
 import matplotlib.pyplot as Plot

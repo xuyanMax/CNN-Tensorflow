@@ -1,7 +1,7 @@
 # WEEK-4
 
 ## Coding Summary 
-
+To do
 ## Data Preprocessing
 
 ### Download Images
@@ -98,6 +98,7 @@ split_data(CAT_SOURCE_DIR, TRAINING_CATS_DIR, TESTING_CATS_DIR, split_size)
 split_data(DOG_SOURCE_DIR, TRAINING_DOGS_DIR, TESTING_DOGS_DIR, split_size)
 ```
 ### (1) Load Data from Direcories with Specified Naming
+`ImageGenerator` can flow images from a directory and perform operations such as resizing them on the fly. Don't use `model.fit` this time but `model.fit_generator`
 
 Create `XXX_datagen = ImageDataGenerator(...)` with `Image Augmentation` parameters (`rotation_range`, `horizontal_flip`, `shear_range`, `width_shift_range`, `zoom_range` and `fill_mode`) for training and testing purposes. 
 
@@ -107,7 +108,7 @@ XXX_datagen.flow_from_directory(
     TRAINING_DIR,
     target_size=(150,150),
     batch_size=20,
-    class_mode='binary' # multi-class use categorical
+    class_mode='binary' # categorical is used for multi-class
     )
 
 ```
@@ -212,5 +213,3 @@ history = model.fit_generator(...)
 
 ### loss
 `mean_squared_error`, `sparse_categorical_crossentropy`, `binary_crossentropy`
-
-

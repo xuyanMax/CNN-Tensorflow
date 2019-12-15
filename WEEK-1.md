@@ -1,6 +1,7 @@
 ## WEEK-1 CNN
+In the first course in this specialization, you had an introduction to TensorFlow, and how, with its high level APIs you could do basic image classification, an you learned a little bit about Convolutional Neural Networks (ConvNets). In this course you'll go deeper into using ConvNets will real-world data, and learn about techniques that you can use to improve your ConvNet performance, particularly when doing image classification! In Week 1, this week, you'll get started by looking at a much larger dataset than you've been using thus far: The Cats and Dogs dataset which had been a Kaggle Challenge in image classification!
 
-Look at a famous Kaggle Dogs vs Cats dataset: https://www.kaggle.com/c/dogs-vs-cats
+Look at a famous [Kaggle Dogs vs Cats dataset]( https://www.kaggle.com/c/dogs-vs-cats)
 
 ### WEEK-1 Quiz
 
@@ -79,7 +80,7 @@ validation_generator = validation_datagen.flow_from_directory(validation_dir, ba
 
 ```python
 history = model.fit_generator(train_generator, 
-                                validation_data=test_generator, 
+                                validation_data=validation_generator, 
                                 steps_per_epoch=100, 
                                 epochs=15, 
                                 validation_step=50, 
@@ -118,3 +119,6 @@ plt.title("Training and Validation Loss")
 plt.figure()
 ```
 Overfitting occurs as training accuracy gets close to 100% while testing accuracy stalls as 70%. The testing loss reaches the minimum after 5 epochs. 
+
+Now that we’ve seen it overfitting, let’s next look at how, with a simple code modification, we can add Augmentation to the same Convolutional Neural Network to see how it gives us better training data that overfits less!
+

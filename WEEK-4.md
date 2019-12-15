@@ -1,7 +1,20 @@
 # WEEK-4
+In the last few lessons, you've been building a binary classifier. One which detects two different types of objects, horse or human, cat or dog, that type of thing. In this lesson, we'll take a look at how we can extend that for multiple classes. Remember when we were classifying horses or human, we had a file structure like this. There were subdirectories for each class, where in this case we only had two. The first thing that you'll need to do is replicate this for multiple classes like this. It's very similar and here you can see that both the training and validation have three subdirectories. One for Rock, one for Paper, and one for Scissors. In these, we can put training and validation images for Rock, Paper, and Scissors.
 
 ## Coding Summary 
-To do
+
+### Rock-Paper-Scissor
+Rock Paper Scissors is a dataset containing 2,892 images of diverse hands in Rock/Paper/Scissors poses. It is licensed [CC By 2.0](https://creativecommons.org/licenses/by/2.0/) and available for all purposes, but it’s intent is primarily for learning and research.
+
+Rock Paper Scissors contains images from a variety of different hands,  from different races, ages and genders, posed into Rock / Paper or Scissors and labelled as such. You can download the [training set here](https://storage.googleapis.com/laurencemoroney-blog.appspot.com/rps.zip), and the [test set here](https://storage.googleapis.com/laurencemoroney-blog.appspot.com/rps-test-set.zip). These images have all been generated using CGI techniques as an experiment in determining if a CGI-based dataset can be used for classification against real images. I also generated a few images that you can use for predictions. You can find them [here](https://storage.googleapis.com/laurencemoroney-blog.appspot.com/rps-validation.zip).
+
+Note that all of this data is posed against a white background.
+
+Each image is 300×300 pixels in 24-bit color
+
+#### Rock-Paper-Scissor notebook
+Checkout it out [here](https://colab.research.google.com/drive/14Y7rwafBugsu8SSzYXwdhhIfYQArrQxA#scrollTo=jp9dLel9N9DS)
+
 ## Data Preprocessing
 
 ### Download Images
@@ -97,7 +110,7 @@ split_size = .9
 split_data(CAT_SOURCE_DIR, TRAINING_CATS_DIR, TESTING_CATS_DIR, split_size)
 split_data(DOG_SOURCE_DIR, TRAINING_DOGS_DIR, TESTING_DOGS_DIR, split_size)
 ```
-### (1) Load Data from Direcories with Specified Naming
+### (1) Load Data from Directories with Specified Naming
 `ImageGenerator` can flow images from a directory and perform operations such as resizing them on the fly. Don't use `model.fit` this time but `model.fit_generator`
 
 Create `XXX_datagen = ImageDataGenerator(...)` with `Image Augmentation` parameters (`rotation_range`, `horizontal_flip`, `shear_range`, `width_shift_range`, `zoom_range` and `fill_mode`) for training and testing purposes. 
@@ -213,3 +226,17 @@ history = model.fit_generator(...)
 
 ### loss
 `mean_squared_error`, `sparse_categorical_crossentropy`, `binary_crossentropy`
+
+
+## So far
+You're coming to the end of Course 2, and you've come a long way! From first principles in understanding how ML works, to using a DNN to do basic computer vision, and then beyond into Convolutions.
+
+With Convolutions, you then saw how to extract features from an image, and you saw the tools in TensorFlow and Keras to build with Convolutions and Pooling as well as handling complex, multi-sized images.
+
+Through this you saw how overfitting can have an impact on your classifiers, and explored some strategies to avoid it, including Image Augmentation, Dropouts, Transfer Learning and more. To wrap things up, this week you've looked at the considerations in your code that you need for moving towards multi-class classification!
+
+# Exercise 4 - Multi-class classifier
+
+Now that you've explored the concepts behind going from binary classification to multi class classification, it's time for another Exercise. In this one you'll use the Sign Language dataset from https://www.kaggle.com/datamunge/sign-language-mnist/home, and attempt to build a multi-class classifier to recognize sign language!
+
+Let's build a multi-class classifier to recognize sign language!

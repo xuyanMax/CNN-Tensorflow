@@ -56,6 +56,7 @@ pre_trained_model.load_weights(local_weights_file)
 # Lock up layers
 for layer in pre_trained_model.layers:
     layer.trainbale = False
+
 # Show model layers & get the last layer
 pre_trained_model.summary()
 last_layer = pre_trained_model.get_layer('mixed7')
@@ -140,4 +141,13 @@ plt.legend(loc=0)
 plt.figure()
 plt.show()
 ```
+## Exercise 3 - Horses vs. humans using Transfer Learning
+This week your exercise will be to apply what you've learned about Transfer Learning to see if you can increase training accuracy for Horses v Humans to 99.9% or greater. To avoid crazy overfitting, your validation set accuracy should be around 95% if you do it right!
 
+Your training should automatically stop once it reaches this desired accuracy, and it should do it in less than 100 epochs(69). Running on a colab GPU, I've been able to hit this metric in about 3 minutes and 69 epochs, and I'm sure with a bit of trial and error you could do much better!
+
+For an increased challenge, see if you can get the validation set to 99% or above also! :)
+
+Let' now use Transfer Learning to increase the training accuracy for Horses v Humans!
+
+Check out the [notebook](https://colab.research.google.com/drive/1JgqL5N-Q3JCe1VIYMsU5XkI6gTgRPeha#scrollTo=Blhq2MAUeyGA) on colab. 
